@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-cd ./selepy/
-docker-compose stop
+docker-compose stop || true

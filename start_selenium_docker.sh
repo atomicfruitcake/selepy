@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker stop $(docker ps | grep selenium)
+docker stop $(docker ps | grep selenium) || true
 
-cd ./selepy/
+cd ..
 docker-compose up -d

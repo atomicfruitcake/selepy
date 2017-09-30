@@ -10,11 +10,12 @@ import os
 
 def start_docker():
     print('Starting docker containers with docker-compose')
-    os.system('sh ~/start_selenium_docker.sh')
+    os.system('sh ../start_selenium_docker.sh')
 
 def stop_docker():
     print('Stopping docker containers with docker-compose')
-    os.system('sh ~/stop_selenium_docker.sh')
+    os.system('sh ../stop_selenium_docker.sh')
 
 if __name__ == "__main__":
+    print os.getcwd()
     start_docker()
