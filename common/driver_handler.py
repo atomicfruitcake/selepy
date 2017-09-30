@@ -58,7 +58,7 @@ def get_driver():
     return driver
 
 
-def abstract_driver_handler():
+def abstract_driver_handler(driver_test):
     def driver_decorator(driver_test):
         @wraps(driver_test)
         def wrapped(*args, **kwargs):
@@ -76,8 +76,8 @@ def abstract_driver_handler():
     return driver_decorator
 
 
-@abstract_driver_handler
-def foo():
+@abstract_driver_handler('foo')
+def foo(a):
     google_search_example.test_script()
 
 if __name__ == '__main__':

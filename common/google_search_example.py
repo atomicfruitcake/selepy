@@ -4,9 +4,7 @@
 '''
 
 import selepy_driver
-import driver_handler
 from constants import constants
-
 
 def test_script(driver):
     selepy_driver.go_to_url(driver=driver, url=constants.GOOGLE)
