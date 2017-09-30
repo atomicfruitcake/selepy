@@ -3,7 +3,7 @@
 
 '''
 import logging
-import unittest
+import google_search_example
 import selepy_driver
 from constants import constants
 
@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 driver_type = 'driver_type'
 docker_type = 'docker_type'
+
+from functools import wraps
 
 def get_settings_dict():
     '''
@@ -26,87 +28,57 @@ def get_settings_dict():
 
 from functools import wraps
 
-def driver_manager(test_script):
-    @wraps(test_script)
-    def driver_wrapper():
-        driver = ''
-        settings_dict = get_settings_dict()
-        if settings_dict.get(docker_type) is True:
-            if settings_dict.get(driver_type) == constants.CHROME:
-                logger.info("Starting local chromedriver")
-                driver = selepy_driver.init_chromedriver()
+def get_driver():
+    '''
+    Returns a driver based upon configuration in settings
+    @return: driver: selenium webdriver based on setting
+    '''
+    driver = None
+    settings_dict = get_settings_dict()
+    if settings_dict.get(docker_type) is True:
+        if settings_dict.get(driver_type) == constants.CHROME:
+            logger.info("Starting dockerized chromedriver")
+            driver = selepy_driver.init_dockerized_chromedriver()
 
-        if settings_dict.get(docker_type) is True:
-            if settings_dict.get(driver_type) == constants.FIREFOX:
-                logger.info("Starting local chromedriver")
-                driver = selepy_driver.init_firefoxdriver()
+    if settings_dict.get(docker_type) is True:
+        if settings_dict.get(driver_type) == constants.FIREFOX:
+            logger.info("Starting dockerized firefoxdriver")
+            driver = selepy_driver.init_dockerized_firefoxdriver()
 
-        if settings_dict.get(docker_type) is False:
-            if settings_dict.get(driver_type) == constants.CHROME:
-                logger.info("Starting local chromedriver")
-                driver = selepy_driver.init_dockerized_chromedriver()
+    if settings_dict.get(docker_type) is False:
+        if settings_dict.get(driver_type) == constants.CHROME:
+            logger.info("Starting local chromedriver")
+            driver = selepy_driver.init_chromedriver()
 
-        if settings_dict.get(docker_type) is False:
-            if settings_dict.get(driver_type) == constants.FIREFOX:
-                logger.info("Starting local chromedriver")
-                driver = selepy_driver.init_firefoxdriver()
+    if settings_dict.get(docker_type) is False:
+        if settings_dict.get(driver_type) == constants.FIREFOX:
+            logger.info("Starting local chromedriver")
+            driver = selepy_driver.init_firefoxdriver()
 
-        test_function = test_script(driver)
+    return driver
 
-        selepy_driver.driver_funcs.quit_driver(driver=driver)
 
-        return test_function
-    return driver_wrapper
+def abstract_driver_handler():
+    def driver_decorator(driver_test):
+        @wraps(driver_test)
+        def wrapped(*args, **kwargs):
 
-@driver_manager
-def myfunc(myarg):
-    print("my function", myarg)
-    return "return value"
+            logger.info('Starting driver here')
+            driver = get_driver()
 
-# class Local_chromedriver(unittest.TestCase):
-#     @classmethod
-#     def setUp(self):
-#         logger.info("Starting local chromedriver")
-#         selepy_driver.init_chromedriver()
-#
-#     @classmethod
-#     def tearDown(self):
-#         logger.info('Closing local chromedriver')
-#         selepy_driver.driver_funcs.quit_driver()
-#
-#
-# class Local_firefoxdriver(unittest.TestCase):
-#     @classmethod
-#     def setUp(self):
-#         logger.info("Starting local firefoxdriver")
-#         selepy_driver.init_firefoxdriver()
-#
-#     @classmethod
-#     def tearDown(self):
-#         logger.info('Closing local firefoxdriver')
-#         selepy_driver.driver_funcs.quit_driver()
-#
-# class Docker_chromedriver(unittest.TestCase):
-#     logger.info("Starting dockerized chromedriver")
-#     @classmethod
-#     def setUp(self):
-#         selepy_driver.init_dockerized_chromedriver()
-#
-#     @classmethod
-#     def tearDown(self):
-#         logger.info('Closing dockerized chromedriver')
-#         selepy_driver.driver_funcs.quit_driver()
-#
-# class Docker_firefoxdriver(unittest.TestCase):
-#     @classmethod
-#     def setUp(self):
-#         logger.info("Starting dockerized firefoxdriver")
-#         selepy_driver.init_dockerized_firefoxdriver()
-#
-#     @classmethod
-#     def tearDown(self):
-#         logger.info('Closing dockerized firefoxdriver')
-#         selepy_driver.driver_funcs.quit_driver()
+            decorated_driver = driver_test(driver=driver)
+
+            logger.info('Quiting driver')
+            selepy_driver.quit_driver(driver=driver)
+            return decorated_driver
+        return wrapped
+
+    return driver_decorator
+
+
+@abstract_driver_handler
+def foo():
+    google_search_example.test_script()
 
 if __name__ == '__main__':
-    print myfunc('asdf')
+    foo()
