@@ -17,5 +17,4 @@ def stop_docker():
     os.system('sh ../stop_selenium_docker.sh')
 
 if __name__ == "__main__":
-    print os.getcwd()
     start_docker()

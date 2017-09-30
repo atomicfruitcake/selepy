@@ -22,7 +22,8 @@ def init_dockerized_firefoxdriver():
     @return: remote chrome webdriver
     '''
     logger.info('Initializing dockerized firefox webdriver')
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM, desired_capabilities=DesiredCapabilities.FIREFOX)
+    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
+                            desired_capabilities=DesiredCapabilities.FIREFOX)
 
 
 def init_dockerized_chromedriver():
@@ -31,7 +32,8 @@ def init_dockerized_chromedriver():
     @return: remote chrome webdriver
     '''
     logger.info('Initializing dockerized firefox webdriver')
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM, desired_capabilities=DesiredCapabilities.CHROME)
+    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
+                            desired_capabilities=DesiredCapabilities.CHROME)
 
 
 def init_chromedriver():

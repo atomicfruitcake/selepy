@@ -11,4 +11,4 @@ class constants:
 
     #Settings
     driver = 'chrome'
-    docker = 'false'
+    docker = False
