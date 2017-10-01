@@ -26,7 +26,22 @@ def get_settings_dict():
 
     return settings_dict
 
-from functools import wraps
+def abstract_driver_handler(get_driver, teardown):
+    def driver_decorator(func):
+        def wrapped(*args, **kwargs):
+
+            logger.info('Starting driver here')
+            driver = get_driver(*args, **kwargs)
+
+            result = 'foo'
+
+            teardown(driver=driver)
+
+
+            return result
+        return wrapped
+
+    return driver_decorator
 
 def get_driver():
     '''
@@ -57,27 +72,15 @@ def get_driver():
 
     return driver
 
+def teardown(driver):
+    '''
+    Quits a driver in a wrapper from
+    @param driver: driver to quit
+    '''
+    selepy_driver.quit_driver(driver=driver)
 
-def abstract_driver_handler(driver_test):
-    def driver_decorator(driver_test):
-        @wraps(driver_test)
-        def wrapped(*args, **kwargs):
-
-            logger.info('Starting driver here')
-            driver = get_driver()
-
-            decorated_driver = driver_test(driver=driver)
-
-            logger.info('Quiting driver')
-            selepy_driver.quit_driver(driver=driver)
-            return decorated_driver
-        return wrapped
-
-    return driver_decorator
-
-
-@abstract_driver_handler('foo')
-def foo(a):
+@abstract_driver_handler(get_driver, teardown)
+def foo():
     google_search_example.test_script()
 
 if __name__ == '__main__':
