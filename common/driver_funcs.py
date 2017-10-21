@@ -1,62 +1,16 @@
 '''!
 @author atomicfruitcake
 
-This module contains selenium functions for automating SMC interactions
+This module contains functions to manipulate selenium webdrivers
 '''
 
 import logging
-
-from selenium import webdriver
-
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 from constants import constants
+import selenium_docker_container
 
 logger = logging.getLogger(__name__)
-
-def init_dockerized_chromedriver():
-    '''
-    Intialize remote webdriver to run inside a containerized instance of Chrome
-    @return: remote chrome webdriver
-    '''
-    logger.info('Initializing dockerized chrome webdriver')
-    print('Initializing dockerized chrome webdriver')
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
-                            desired_capabilities=DesiredCapabilities.CHROME)
-
-def init_dockerized_firefoxdriver():
-    '''
-    Intialize remote webdriver to run inside a containerized instance of Chrome
-    @return: remote chrome webdriver
-    '''
-    logger.info('Initializing dockerized firefox webdriver')
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
-                            desired_capabilities=DesiredCapabilities.FIREFOX)
-
-
-def init_chromedriver():
-    '''
-    Intialize chrome webdriver to run locally
-    @return: chrome webdriver
-    '''
-    logger.info('Initializing chrome webdriver')
-    driver = webdriver.Chrome()
-    driver.maximize_window()
-    driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
-    return driver
-
-
-def init_firefoxdriver():
-    '''
-    Intialize firefox webdriver to run locally
-    @return: firefox webdriver
-    '''
-    logger.info('Initializing firefox webdriver')
-    driver = webdriver.Firefox
-    driver.maximize_window()
-    driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
-    return driver
 
 def go_to_url(driver, url):
     '''
@@ -64,21 +18,38 @@ def go_to_url(driver, url):
     @param driver: driver to direct to url
     @param url: url to go to
     '''
+    logger.info('Going to url {}'.format(url))
+
     driver.get(url)
+
+def wait(seconds):
+    '''
+    Makes a driver wait for given number of seconds
+    @param seconds: number of seconds to wait fore
+    '''
+    time.sleep(seconds)
 
 def quit_driver(driver=None):
     '''
     Quits a selenium driver
     @param driver: selenium driver to quit
     '''
+    logger.info('Quitting {} driver'.format(driver))
+
     if driver is not None:
         driver.quit()
+
+    if constants.DOCKER is True:
+        selenium_docker_container.stop_docker()
+
 
 def take_screenshot(driver):
     '''
     Takes a screenshot of the screen of the current driver
     @param driver: driver to take screenshot of.
     '''
+    logger.info('Taking screenshot at {}'.str(driver.current_url))
+
     driver.get_screenshot_as_file(constants.SCREENSHOT_DIR)
 
 def assert_url(driver, url):
@@ -87,9 +58,11 @@ def assert_url(driver, url):
     @param driver: driver to assert url of
     @param url: url to assert is equal to that of driver
     '''
+    logger.info('Asserting current url is {}'.format(url))
+
     assert driver.current_url == url
 
-def click_element_by_id(self, driver, id):
+def click_element_by_id(driver, id):
     '''
     Click and element based on id
     @param driver: driver with element to click
