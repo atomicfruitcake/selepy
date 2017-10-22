@@ -5,6 +5,7 @@ This module handles the driver based on the settings. By handling the types of b
 here, we can separate the driver manipulation from the driver configuration
 '''
 import logging
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -27,9 +28,11 @@ def init_dockerized_chromedriver():
     '''
     logger.info('Initializing dockerized chrome webdriver')
     selenium_docker_container.start_docker()
+    time.sleep(10)
 
     return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
                             desired_capabilities=DesiredCapabilities.CHROME)
+
 
 def init_dockerized_firefoxdriver():
     '''
@@ -38,6 +41,7 @@ def init_dockerized_firefoxdriver():
     '''
     logger.info('Initializing dockerized firefox webdriver')
     selenium_docker_container.start_docker()
+    time.sleep(10)
 
     return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
                             desired_capabilities=DesiredCapabilities.FIREFOX)

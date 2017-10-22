@@ -3,7 +3,7 @@
 
 This module contains functions to manipulate selenium webdrivers
 '''
-
+from datetime import datetime
 import logging
 import time
 
@@ -25,13 +25,16 @@ def go_to_url(driver, url):
 def wait(seconds):
     '''
     Makes a driver wait for given number of seconds
-    @param seconds: number of seconds to wait fore
+    @param seconds: number of seconds to wait for
     '''
+    if seconds is None:
+        seconds = constants.WAIT_TIME
     time.sleep(seconds)
 
 def quit_driver(driver=None):
     '''
-    Quits a selenium driver
+    Quits a selenium driver. If driver is running in
+    docker, it stops the docker containers.
     @param driver: selenium driver to quit
     '''
     logger.info('Quitting {} driver'.format(driver))
@@ -43,14 +46,16 @@ def quit_driver(driver=None):
         selenium_docker_container.stop_docker()
 
 
-def take_screenshot(driver):
+def take_screenshot(driver, filename=None):
     '''
     Takes a screenshot of the screen of the current driver
     @param driver: driver to take screenshot of.
+    @param filename: filename of the screenshot
     '''
-    logger.info('Taking screenshot at {}'.str(driver.current_url))
+    if filename is None:
+        filename = str(datetime.utcnow())
 
-    driver.get_screenshot_as_file(constants.SCREENSHOT_DIR)
+    driver.get_screenshot_as_file(constants.SCREENSHOT_DIR + filename + '.png')
 
 def assert_url(driver, url):
     '''

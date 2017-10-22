@@ -8,7 +8,7 @@ seleniumhub:
     - GRID_BROWSER_TIMEOUT=60000
 
 chromenode:
-  image: selenium/node-chrome
+  image: selenium/node-chrome-debug
   volumes:
       - /dev/shm:/dev/shm
   ports:
@@ -17,7 +17,7 @@ chromenode:
     - seleniumhub:hub
 
 firefoxnode:
-  image: selenium/node-firefox
+  image: selenium/node-firefox-debug
   volumes:
       - /dev/shm:/dev/shm
   ports:
