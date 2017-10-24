@@ -6,11 +6,9 @@ here, we can separate the driver manipulation from the driver configuration
 '''
 import logging
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
-
 from constants import constants
 import selenium_docker_container
 import driver_funcs
@@ -21,7 +19,7 @@ logger = logging.getLogger(__name__)
 driver_type = 'driver_type'
 docker_type = 'docker_type'
 
-def init_dockerized_chromedriver():
+def __init_dockerized_chromedriver():
     '''
     Intialize remote webdriver to run inside a containerized instance of Chrome
     @return: remote chrome webdriver
@@ -33,7 +31,7 @@ def init_dockerized_chromedriver():
     return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.CHROME)
 
-def init_dockerized_firefoxdriver():
+def __init_dockerized_firefoxdriver():
     '''
     Intialize remote webdriver to run inside a containerized instance of Chrome
     @return: remote chrome webdriver
@@ -45,7 +43,7 @@ def init_dockerized_firefoxdriver():
     return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.FIREFOX)
 
-def init_chromedriver():
+def __init_chromedriver():
     '''
     Intialize chrome webdriver to run locally
     @return: chrome webdriver
@@ -56,7 +54,7 @@ def init_chromedriver():
     driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
     return driver
 
-def init_firefoxdriver():
+def __init_firefoxdriver():
     '''
     Intialize firefox webdriver to run locally
     @return: firefox webdriver
@@ -67,7 +65,7 @@ def init_firefoxdriver():
     driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
     return driver
 
-def get_settings_dict():
+def __get_settings_dict():
     '''
     Get a dict containing the setting for firing up a driver
     @return: settings_dict: dict containing the settings.
@@ -87,26 +85,26 @@ def get_driver():
     '''
     driver = None
 
-    settings_dict = get_settings_dict()
+    settings_dict = __get_settings_dict()
     if settings_dict.get(docker_type) is True:
         if settings_dict.get(driver_type) == constants.CHROME:
             logger.info("Starting dockerized chromedriver")
-            driver = init_dockerized_chromedriver()
+            driver = __init_dockerized_chromedriver()
 
     if settings_dict.get(docker_type) is True:
         if settings_dict.get(driver_type) == constants.FIREFOX:
             logger.info("Starting dockerized firefoxdriver")
-            driver = init_dockerized_firefoxdriver()
+            driver = __init_dockerized_firefoxdriver()
 
     if settings_dict.get(docker_type) is False:
         if settings_dict.get(driver_type) == constants.CHROME:
             logger.info("Starting local chromedriver")
-            driver = init_chromedriver()
+            driver = __init_chromedriver()
 
     if settings_dict.get(docker_type) is False:
         if settings_dict.get(driver_type) == constants.FIREFOX:
             logger.info("Starting local chromedriver")
-            driver = init_firefoxdriver()
+            driver = __init_firefoxdriver()
 
     if driver == None:
         raise SyntaxError('Error with driver configuration settings')
