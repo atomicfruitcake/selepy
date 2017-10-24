@@ -30,9 +30,8 @@ def init_dockerized_chromedriver():
     selenium_docker_container.start_docker()
     time.sleep(10)
 
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
+    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.CHROME)
-
 
 def init_dockerized_firefoxdriver():
     '''
@@ -43,9 +42,8 @@ def init_dockerized_firefoxdriver():
     selenium_docker_container.start_docker()
     time.sleep(10)
 
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM,
+    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.FIREFOX)
-
 
 def init_chromedriver():
     '''
@@ -57,7 +55,6 @@ def init_chromedriver():
     driver.maximize_window()
     driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
     return driver
-
 
 def init_firefoxdriver():
     '''
@@ -81,8 +78,6 @@ def get_settings_dict():
                      docker_type: use_docker}
 
     return settings_dict
-
-
 
 def get_driver():
     '''

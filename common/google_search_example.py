@@ -21,5 +21,13 @@ def google_search(searchTerm):
     finally:
         driver_handler.kill_driver(driver=driver)
 
+# An attempted to simply wrap a test function to close the test function if it fails
+def safely_handled_function(function):
+    driver = driver_handler.get_driver()
+    try:
+        function(driver)
+    finally:
+        driver_handler.kill_driver(driver=driver)
+
 if __name__ == '__main__':
     google_search(searchTerm='Test')
