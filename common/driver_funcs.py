@@ -69,7 +69,7 @@ def assert_url(driver, url):
 
 def click_element_by_id(driver, id):
     '''
-    Click and element based on id
+    Click an element based on id
     @param driver: driver with element to click
     @param id: id of element to click
     '''
@@ -78,7 +78,7 @@ def click_element_by_id(driver, id):
 
 def click_element_by_xpath(driver, xpath):
     '''
-    Click and element based on xpath
+    Click an element based on xpath
     @param driver: driver with element to click
     @param xpath: xpath of element to click
     '''
@@ -87,7 +87,7 @@ def click_element_by_xpath(driver, xpath):
 
 def click_element_by_name(driver, name):
     '''
-    Click and element based on name
+    Click an element based on name
     @param driver: driver with element to click
     @param name: name of element to click
     '''
