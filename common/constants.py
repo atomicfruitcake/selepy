@@ -15,4 +15,4 @@ class constants:
 
     # Settings
     BROWSER = CHROME
-    DOCKER = True
+    DOCKER = False

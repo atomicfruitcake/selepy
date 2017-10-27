@@ -94,6 +94,15 @@ def click_element_by_name(driver, name):
     element = driver.find_element_by_name(name)
     element.click()
 
+def click_element_by_foo(driver, name):
+    '''
+    Click and element based on name
+    @param driver: driver with element to click
+    @param name: name of element to click
+    '''
+    element = driver.find_element_by_id
+    element.click()
+
 def send_keys_by_id(driver, id, keys):
     '''
     Send keys to an element based on id
