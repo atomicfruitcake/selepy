@@ -109,6 +109,7 @@ def get_driver():
     if driver == None:
         raise SyntaxError('Error with driver configuration settings')
 
+    driver.maximize_window()
     return driver
 
 def kill_driver(driver):
@@ -120,7 +121,7 @@ def kill_driver(driver):
 
 def wrap_test(pre, post):
     '''
-    Basic pythonic wrapper function that can wrap up test methods
+    Basic wrapper function that can wrap up test methods
     to further decouple test from environment
     @param pre: Function to run before test
     @param post: Function to run after test

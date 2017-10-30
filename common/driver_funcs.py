@@ -5,12 +5,15 @@ This module contains functions to manipulate selenium webdrivers
 '''
 from datetime import datetime
 import logging
+import re
 import time
 
 from constants import constants
 import selenium_docker_container
 
 logger = logging.getLogger(__name__)
+logging.getLogger().addHandler(logging.StreamHandler())
+
 
 def go_to_url(driver, url):
     '''
@@ -59,13 +62,23 @@ def take_screenshot(driver, filename=None):
 
 def assert_url(driver, url):
     '''
-    Takes a screenshot of the screen of the current driver
+    Asserts that the drivers url ma
     @param driver: driver to assert url of
-    @param url: url to assert is equal to that of driver
+    @param url: string of url to assert is equal to that of driver
     '''
     logger.info('Asserting current url is {}'.format(url))
 
     assert driver.current_url == url
+
+def assert_url_contain(driver, match_term):
+    '''
+    Asserts that the drivers url contains the specific term
+    @param driver: driver to assert url contains a given string
+    @param match_term: string we are asserting is contained in the url
+    '''
+    logger.info('Asserting current url contains {}'.format(match_term))
+
+    assert re.search(match_term, driver.current_url) is True
 
 def click_element_by_id(driver, id):
     '''
@@ -92,15 +105,6 @@ def click_element_by_name(driver, name):
     @param name: name of element to click
     '''
     element = driver.find_element_by_name(name)
-    element.click()
-
-def click_element_by_foo(driver, name):
-    '''
-    Click and element based on name
-    @param driver: driver with element to click
-    @param name: name of element to click
-    '''
-    element = driver.find_element_by_id
     element.click()
 
 def send_keys_by_id(driver, id, keys):
