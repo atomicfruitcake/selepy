@@ -6,9 +6,11 @@ here, we can separate the driver manipulation from the driver configuration
 '''
 import logging
 import time
+
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
+
 from constants import constants
 import selenium_docker_container
 import driver_funcs
@@ -26,7 +28,7 @@ def __init_dockerized_chromedriver():
     '''
     logger.info('Initializing dockerized chrome webdriver')
     selenium_docker_container.start_docker()
-    time.sleep(10)
+    time.sleep(constants.WAIT_TIME)
 
     return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.CHROME)
@@ -38,7 +40,7 @@ def __init_dockerized_firefoxdriver():
     '''
     logger.info('Initializing dockerized firefox webdriver')
     selenium_docker_container.start_docker()
-    time.sleep(10)
+    time.sleep(constants.WAIT_TIME)
 
     return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.FIREFOX)
@@ -119,19 +121,19 @@ def kill_driver(driver):
     '''
     driver_funcs.quit_driver(driver=driver)
 
-def wrap_test(pre, post):
+def wrap_test(startup, teardown):
     '''
     Basic wrapper function that can wrap up test methods
     to further decouple test from environment
-    @param pre: Function to run before test
-    @param post: Function to run after test
+    @param startup: Function to run before test
+    @param teardown: Function to run after test
     @return: A decorator that can we used to call the wrapper on a function
     '''
     def decorate(test_method):
         def call(*args, **kwargs):
-            pre(test_method, *args, **kwargs)
+            startup(test_method, *args, **kwargs)
             result = test_method(*args, **kwargs)
-            post(test_method, *args, **kwargs)
+            teardown(test_method, *args, **kwargs)
             return result
         return call
     return decorate

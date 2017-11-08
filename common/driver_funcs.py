@@ -28,6 +28,7 @@ def go_to_url(driver, url):
 def wait(seconds):
     '''
     Makes a driver wait for given number of seconds
+    If seconds is None, defaults to the time set in constants.py
     @param seconds: number of seconds to wait for
     '''
     if seconds is None:
@@ -77,7 +78,6 @@ def assert_url_contain(driver, match_term):
     @param match_term: string we are asserting is contained in the url
     '''
     logger.info('Asserting current url contains {}'.format(match_term))
-
     assert re.search(match_term, driver.current_url) is True
 
 def click_element_by_id(driver, id):
@@ -86,8 +86,7 @@ def click_element_by_id(driver, id):
     @param driver: driver with element to click
     @param id: id of element to click
     '''
-    element = driver.find_element_by_id(id)
-    element.click()
+    driver.find_element_by_id(id).click()
 
 def click_element_by_xpath(driver, xpath):
     '''
@@ -95,8 +94,7 @@ def click_element_by_xpath(driver, xpath):
     @param driver: driver with element to click
     @param xpath: xpath of element to click
     '''
-    element = driver.find_element_by_xpath(xpath)
-    element.click()
+    driver.find_element_by_xpath(xpath).click()
 
 def click_element_by_name(driver, name):
     '''
@@ -104,8 +102,7 @@ def click_element_by_name(driver, name):
     @param driver: driver with element to click
     @param name: name of element to click
     '''
-    element = driver.find_element_by_name(name)
-    element.click()
+    driver.find_element_by_name(name).click()
 
 def send_keys_by_id(driver, id, keys):
     '''
@@ -114,8 +111,7 @@ def send_keys_by_id(driver, id, keys):
     @param id: id of element to send keys to
     @param keys: string of keys to send
     '''
-    element = driver.find_element_by_id(id)
-    element.send_keys(keys)
+    driver.find_element_by_id(id).send_keys(keys)
 
 def send_keys_by_xpath(driver, xpath, keys):
     '''
@@ -124,8 +120,7 @@ def send_keys_by_xpath(driver, xpath, keys):
     @param xpath: xpath of element to send keys to
     @param keys: string of keys to send
     '''
-    element = driver.find_element_by_xpath(xpath)
-    element.send_keys(keys)
+    driver.find_element_by_xpath(xpath).send_keys(keys)
 
 def send_keys_by_name(driver, name, keys):
     '''
@@ -134,5 +129,4 @@ def send_keys_by_name(driver, name, keys):
     @param name: name of element to send keys to
     @param keys: string of keys to send
     '''
-    element = driver.find_element_by_name(name)
-    element.send_keys(keys)
+    driver.find_element_by_name(name).send_keys(keys)
