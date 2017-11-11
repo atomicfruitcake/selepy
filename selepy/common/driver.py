@@ -5,9 +5,9 @@ This module encapusulates the driver handler and driver funcs
 into a class, allowing the running of multiple Driver classes
 to perform classes in parallel
 '''
-from constants import constants
 import driver_funcs as df
 import driver_handler
+from constants import constants
 
 
 class Driver():

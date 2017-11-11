@@ -11,10 +11,9 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
 
-from constants import constants
-import selenium_docker_container
 import driver_funcs
-
+import selenium_docker_container
+from constants import constants
 
 logger = logging.getLogger(__name__)
 

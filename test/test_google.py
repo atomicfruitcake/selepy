@@ -5,7 +5,10 @@ This module contains example tests to demonstrate how selepy
 can be used for browser based automated testing
 '''
 import unittest
-from ..common import constants, driver, driver_handler, driver_funcs
+
+from selepy.selepy.common import constants
+from ..common import driver, driver_funcs, driver_handler
+
 
 class ExampleTestWithDriverObject(unittest.TestCase):
     '''

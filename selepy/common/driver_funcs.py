@@ -3,13 +3,13 @@
 
 This module contains functions to manipulate selenium webdrivers
 '''
-from datetime import datetime
 import logging
 import re
 import time
+from datetime import datetime
 
-from constants import constants
 import selenium_docker_container
+from constants import constants
 
 logger = logging.getLogger(__name__)
 logging.getLogger().addHandler(logging.StreamHandler())
