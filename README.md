@@ -9,8 +9,11 @@ The motivation behind selepy is to provide a browser and environment agnostic wa
 browser, regardless of locally or remote, or whether inside or outside of docker containers, your tests should run in the 
 same way.
 
-## How does it work
+## How can I use this
+To install, please use `pip install selepy` or `easy_install selepy`. Details about the package can be found on 
+[pypi](https://pypi.python.org/pypi/selepy). If you would like to contribute to selepy, please clone this repository.
 
+## How does it work
 The `driver_handler.py` handles the starting and closing of driver. the `get_driver` function can be used to get a driver based on the 
 settings laid out in `constants.py` file. The `driver` object returned by `get_driver` can then be manipulated by `driver_funcs.py`. It's
 an interface to the core selenium functionality allowing you to make the driver go to urls, click on/send keys to elements in the browser to
