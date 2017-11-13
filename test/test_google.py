@@ -6,9 +6,12 @@ can be used for browser based automated testing
 '''
 import unittest
 
-from selepy.selepy.common import constants
-from ..common import driver, driver_funcs, driver_handler
+from selepy.selepy import constants
+from selepy.selepy import driver, driver_funcs, driver_handler
 
+search_term = 'do a barrel roll'
+google_search_field_id='lst-ib'
+google_search_button_xpath = '//*[@value="Google Search"][1]'
 
 class ExampleTestWithDriverObject(unittest.TestCase):
     '''
@@ -20,10 +23,9 @@ class ExampleTestWithDriverObject(unittest.TestCase):
         An example of test performing a google search using a driver object
         '''
         Driver = driver.Driver()
-
         Driver.go_to_url(url=constants.constants.GOOGLE)
-        Driver.send_keys_by_id(id='lst-ib', keys='do a barrel roll')
-        Driver.click_element_by_xpath(xpath='//*[@value="Google Search"][1]')
+        Driver.send_keys_by_id(id=google_search_field_id, keys=search_term)
+        Driver.click_element_by_xpath(xpath=google_search_button_xpath)
         Driver.quit_driver()
 
     @driver_handler.wrap_test(driver_handler.startup, driver_handler.teardown)
@@ -33,8 +35,8 @@ class ExampleTestWithDriverObject(unittest.TestCase):
         @return:
         '''
         driver_funcs.go_to_url(driver=driver, url=constants.constants.GOOGLE)
-        driver_funcs.send_keys_by_id(driver=driver, id='lst-ib', keys='do a barrel roll')
-        driver_funcs.click_element_by_xpath(driver=driver, xpath='//*[@value="Google Search"][1]')
+        driver_funcs.send_keys_by_id(driver=driver, id=google_search_field_id, keys=search_term)
+        driver_funcs.click_element_by_xpath(driver=driver, xpath=google_search_button_xpath)
 
 if __name__ == '__main__':
     unittest.main()

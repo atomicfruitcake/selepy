@@ -3,7 +3,7 @@
 ## What is this?
 selepy is an automated testing framework that adds extended functionality to the standard python to selenium binding.
 The idea is to decouple the writing of selenium scripts from the implementation to a specific browser or environment.
-Currently, it can be considered a work in progress translation of [seletest](https://github.com/atomicfruitcake/seletest).
+It can be considered a translation into Python of [seletest](https://github.com/atomicfruitcake/seletest).
 
 The motivation behind selepy is to provide a browser and environment agnostic way of writing selenium tests. Regardless of
 browser, regardless of locally or remote, or whether inside or outside of docker containers, your tests should run in the 

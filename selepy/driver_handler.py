@@ -23,7 +23,7 @@ docker_type = 'docker_type'
 def __init_dockerized_chromedriver():
     '''
     Intialize remote webdriver to run inside a containerized instance of Chrome
-    @return: remote chrome webdriver
+    @return: remote Chrome webdriver
     '''
     logger.info('Initializing dockerized chrome webdriver')
     selenium_docker_container.start_docker()
@@ -46,8 +46,8 @@ def __init_dockerized_firefoxdriver():
 
 def __init_chromedriver():
     '''
-    Intialize chrome webdriver to run locally
-    @return: chrome webdriver
+    Initialize a Chrome webdriver to run locally
+    @return: Chrome webdriver
     '''
     logger.info('Initializing chrome webdriver')
     driver = webdriver.Chrome()
@@ -57,8 +57,8 @@ def __init_chromedriver():
 
 def __init_firefoxdriver():
     '''
-    Intialize firefox webdriver to run locally
-    @return: firefox webdriver
+    Initialize a Firefox webdriver to run locally
+    @return: Firefox webdriver
     '''
     logger.info('Initializing firefox webdriver')
     driver = webdriver.Firefox

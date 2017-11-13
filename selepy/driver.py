@@ -3,7 +3,7 @@
 
 This module encapusulates the driver handler and driver funcs
 into a class, allowing the running of multiple Driver classes
-to perform classes in parallel
+to perform testing in parallel
 '''
 import driver_funcs as df
 import driver_handler
@@ -117,7 +117,7 @@ class Driver():
 
 if __name__ == '__main__':
 
-    d = Driver()
+    driver = Driver()
 
-    d.go_to_url(url=constants.GOOGLE)
+    driver.go_to_url(url=constants.GOOGLE)
 
