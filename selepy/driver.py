@@ -5,12 +5,13 @@ This module encapusulates the driver handler and driver funcs
 into a class, allowing the running of multiple Driver classes
 to perform testing in parallel
 '''
+
 import driver_funcs as df
 import driver_handler
-from constants import constants
+from constants import Constants
 
 
-class Driver():
+class Driver:
     '''
     Driver object to be perform the browser manipulation
     '''
@@ -115,9 +116,8 @@ class Driver():
         '''
         df.send_keys_by_name(driver=self.driver, name=name, keys=keys)
 
+
 if __name__ == '__main__':
-
     driver = Driver()
-
-    driver.go_to_url(url=constants.GOOGLE)
+    driver.go_to_url(url=Constants.GOOGLE)
 

@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 
 import selenium_docker_container
-from constants import constants
+from constants import Constants
 
 logger = logging.getLogger(__name__)
 logging.getLogger().addHandler(logging.StreamHandler())
@@ -32,7 +32,7 @@ def wait(seconds):
     @param seconds: number of seconds to wait for
     '''
     if seconds is None:
-        seconds = constants.WAIT_TIME
+        seconds = Constants.WAIT_TIME
     time.sleep(seconds)
 
 def quit_driver(driver=None):
@@ -42,11 +42,10 @@ def quit_driver(driver=None):
     @param driver: selenium driver to quit
     '''
     logger.info('Quitting {} driver'.format(driver))
-
+    const = Constants()
     if driver is not None:
         driver.quit()
-
-    if constants.DOCKER is True:
+    if const.get_docker() is True:
         selenium_docker_container.stop_docker()
 
 
@@ -59,7 +58,7 @@ def take_screenshot(driver, filename=None):
     if filename is None:
         filename = str(datetime.utcnow())
 
-    driver.get_screenshot_as_file(constants.SCREENSHOT_DIR + filename + '.png')
+    driver.get_screenshot_as_file(Constants.SCREENSHOT_DIR + filename + '.png')
 
 def assert_url(driver, url):
     '''

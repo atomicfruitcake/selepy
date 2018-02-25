@@ -13,12 +13,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 import driver_funcs
 import selenium_docker_container
-from constants import constants
+from constants import Constants
 
 logger = logging.getLogger(__name__)
 
 driver_type = 'driver_type'
 docker_type = 'docker_type'
+
+const = Constants()
 
 def __init_dockerized_chromedriver():
     '''
@@ -27,9 +29,9 @@ def __init_dockerized_chromedriver():
     '''
     logger.info('Initializing dockerized chrome webdriver')
     selenium_docker_container.start_docker()
-    time.sleep(constants.WAIT_TIME)
+    time.sleep(const.WAIT_TIME)
 
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
+    return webdriver.Remote(command_executor=const.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.CHROME)
 
 def __init_dockerized_firefoxdriver():
@@ -39,9 +41,9 @@ def __init_dockerized_firefoxdriver():
     '''
     logger.info('Initializing dockerized firefox webdriver')
     selenium_docker_container.start_docker()
-    time.sleep(constants.WAIT_TIME)
+    time.sleep(const.WAIT_TIME)
 
-    return webdriver.Remote(command_executor=constants.DOCKER_SELENIUM_URL,
+    return webdriver.Remote(command_executor=const.DOCKER_SELENIUM_URL,
                             desired_capabilities=DesiredCapabilities.FIREFOX)
 
 def __init_chromedriver():
@@ -50,9 +52,8 @@ def __init_chromedriver():
     @return: Chrome webdriver
     '''
     logger.info('Initializing chrome webdriver')
-    driver = webdriver.Chrome()
-    driver.maximize_window()
-    driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
+    driver = webdriver.Chrome(executable_path='../webdrivers/chromedriver')
+    driver.wait = WebDriverWait(driver, const.WAIT_TIME)
     return driver
 
 def __init_firefoxdriver():
@@ -62,8 +63,7 @@ def __init_firefoxdriver():
     '''
     logger.info('Initializing firefox webdriver')
     driver = webdriver.Firefox
-    driver.maximize_window()
-    driver.wait = WebDriverWait(driver, constants.WAIT_TIME)
+    driver.wait = WebDriverWait(driver, const.WAIT_TIME)
     return driver
 
 def __get_settings_dict():
@@ -71,8 +71,8 @@ def __get_settings_dict():
     Get a dict containing the setting for firing up a driver
     @return: settings_dict: dict containing the settings.
     '''
-    driver_name = constants.BROWSER.lower()
-    use_docker = constants.DOCKER
+    driver_name = const.get_browser().lower()
+    use_docker = const.get_docker()
     settings_dict = {driver_type: driver_name,
                      docker_type: use_docker}
 
@@ -82,35 +82,34 @@ def get_driver():
     '''
     Returns a driver based upon configuration in settings
     @return: driver: selenium webdriver based on settings
-    specified in the constants file.
+    specified in the const file.
     '''
     driver = None
 
     settings_dict = __get_settings_dict()
     if settings_dict.get(docker_type) is True:
-        if settings_dict.get(driver_type) == constants.CHROME:
+        if settings_dict.get(driver_type) == const.CHROME:
             logger.info("Starting dockerized chromedriver")
             driver = __init_dockerized_chromedriver()
 
     if settings_dict.get(docker_type) is True:
-        if settings_dict.get(driver_type) == constants.FIREFOX:
+        if settings_dict.get(driver_type) == const.FIREFOX:
             logger.info("Starting dockerized firefoxdriver")
             driver = __init_dockerized_firefoxdriver()
 
     if settings_dict.get(docker_type) is False:
-        if settings_dict.get(driver_type) == constants.CHROME:
+        if settings_dict.get(driver_type) == const.CHROME:
             logger.info("Starting local chromedriver")
             driver = __init_chromedriver()
 
     if settings_dict.get(docker_type) is False:
-        if settings_dict.get(driver_type) == constants.FIREFOX:
+        if settings_dict.get(driver_type) == const.FIREFOX:
             logger.info("Starting local chromedriver")
             driver = __init_firefoxdriver()
 
-    if driver == None:
+    if driver is None:
         raise SyntaxError('Error with driver configuration settings')
 
-    driver.maximize_window()
     return driver
 
 def kill_driver(driver):
