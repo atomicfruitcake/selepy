@@ -25,7 +25,7 @@ class Driver:
         '''
         df.go_to_url(driver=self.driver, url=url)
 
-    def wait(self, seconds):
+    def wait(self, seconds=5):
         '''
         Makes a driver wait for given number of seconds
         If seconds is None, defaults to the time set in constants.py

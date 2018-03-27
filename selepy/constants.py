@@ -8,7 +8,7 @@ class Constants:
 
     def __init__(self):
         self._BROWSER = 'chrome'
-        self._DOCKER = True
+        self._DOCKER = False
     # General constants
     SCREENSHOT_DIR = './screenshots/'
     GOOGLE = 'https://www.google.co.uk/'
@@ -16,10 +16,6 @@ class Constants:
     WAIT_TIME = 10
     CHROME = 'chrome'
     FIREFOX = 'firefox'
-
-    # Settings
-    _BROWSER = 'chrome'
-    _DOCKER = True
 
     def set_browser(self, browser):
         if browser.lower_case == 'chrome':
