@@ -10,7 +10,7 @@ from selepy.selepy.constants import Constants
 from selepy.selepy import driver, driver_funcs, driver_handler
 
 google_search_field_id='lst-ib'
-google_search_button_xpath = '//*[@value="Google Search"][1]'
+google_search_button_name = 'btnK'
 
 search_terms = ["zerg rush",
                         "conway's game of life",
@@ -33,7 +33,7 @@ class ExampleTestWithDriverObject(unittest.TestCase):
         for search_term in search_terms:
             d.go_to_url(url=Constants.GOOGLE)
             d.send_keys_by_id(id=google_search_field_id, keys=search_term)
-            d.click_element_by_xpath(xpath=google_search_button_xpath)
+            d.send_keys_by_id(id=google_search_field_id, keys=u'\ue007') #Presses enter
             d.wait(seconds=10)
         d.quit_driver()
 
@@ -46,7 +46,8 @@ class ExampleTestWithDriverObject(unittest.TestCase):
         for search_term in search_terms:
             driver_funcs.go_to_url(driver=driver, url=Constants.GOOGLE)
             driver_funcs.send_keys_by_id(driver=driver, id=google_search_field_id, keys=search_term)
-            driver_funcs.click_element_by_xpath(driver=driver, xpath=google_search_button_xpath)
+            driver_funcs.send_keys_by_id(id=google_search_field_id, keys=u'\ue007') #Presses enter
+            driver_funcs.click_element_by_xpath(driver=driver, xpath=google_search_button_name)
 
 
 if __name__ == '__main__':
